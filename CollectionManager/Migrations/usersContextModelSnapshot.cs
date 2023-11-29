@@ -42,7 +42,12 @@ namespace CollectionManager.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int?>("userID")
+                        .HasColumnType("int");
+
                     b.HasKey("itemID");
+
+                    b.HasIndex("userID");
 
                     b.ToTable("items");
 
@@ -78,9 +83,6 @@ namespace CollectionManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("userID"));
 
-                    b.Property<int?>("itemID")
-                        .HasColumnType("int");
-
                     b.Property<string>("password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -90,8 +92,6 @@ namespace CollectionManager.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("userID");
-
-                    b.HasIndex("itemID");
 
                     b.ToTable("users");
 
@@ -116,13 +116,13 @@ namespace CollectionManager.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CollectionManager.Models.user", b =>
+            modelBuilder.Entity("CollectionManager.Models.item", b =>
                 {
-                    b.HasOne("CollectionManager.Models.item", "item")
+                    b.HasOne("CollectionManager.Models.user", "user")
                         .WithMany()
-                        .HasForeignKey("itemID");
+                        .HasForeignKey("userID");
 
-                    b.Navigation("item");
+                    b.Navigation("user");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,11 +2,11 @@
 namespace CollectionManager.Models
   
 {
-    public class usersContext : DbContext
+    public class UsersContext : DbContext
     {
-        public usersContext() { }
+        public UsersContext() { }
 
-        public usersContext(DbContextOptions<usersContext> options)
+        public UsersContext(DbContextOptions<usersContext> options)
            : base(options) { }
 
         public DbSet<user> users { get; set; }

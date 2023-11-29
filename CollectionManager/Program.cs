@@ -9,7 +9,7 @@ builder.Services.AddControllersWithViews();
 
 //creates the connection between th
 var connectionString = builder.Configuration.GetConnectionString("CollectionManager");
-builder.Services.AddDbContext<usersContext>(options => 
+builder.Services.AddDbContext<UsersContext>(options => 
                     options.UseSqlServer(connectionString));
 
 var app = builder.Build();

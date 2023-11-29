@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace CollectionManager.Models
 {
-    public class item
+    public class Item
     {
         [Required(ErrorMessage = "Item id must be set.")]
         public int itemID { get; set; }
@@ -13,7 +13,8 @@ namespace CollectionManager.Models
         [Required(ErrorMessage = "You must show off your item")]
         //varbinary(MAX) will need this later
         public byte[] image { get; set; }
-        
+
+        public user? user { get; set; }
 
     }
 }

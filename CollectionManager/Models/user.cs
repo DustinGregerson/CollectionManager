@@ -2,7 +2,7 @@
 
 namespace CollectionManager.Models
 {
-    public class user
+    public class User
     {
         public int userID { get; set; }
         [Required(ErrorMessage = "The username is requried")]
@@ -10,6 +10,6 @@ namespace CollectionManager.Models
         [Required(ErrorMessage = "password is required")]
         public string password { get; set; }
 
-        public item? item { get; set; }
+        
     }
 }
