@@ -1,7 +1,16 @@
+
+using CollectionManager.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//creates the connection between th
+var connectionString = builder.Configuration.GetConnectionString("CollectionManager");
+builder.Services.AddDbContext<usersContext>(options => 
+                    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
