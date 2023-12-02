@@ -2,7 +2,7 @@
 {
     public class ItemDetailedViewModel
     {
-        user user { get; set; }
+        User user { get; set; }
 
     }
 }

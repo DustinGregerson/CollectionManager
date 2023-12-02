@@ -6,13 +6,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMemoryCache();
+builder.Services.AddSession(options =>
 
+options.IdleTimeout = TimeSpan.FromMinutes(60)
+
+) ;
 //creates the connection between th
 var connectionString = builder.Configuration.GetConnectionString("CollectionManager");
 builder.Services.AddDbContext<UsersContext>(options => 
                     options.UseSqlServer(connectionString));
 
 var app = builder.Build();
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

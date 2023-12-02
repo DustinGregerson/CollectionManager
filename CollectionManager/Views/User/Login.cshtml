@@ -1,0 +1,21 @@
+﻿@model Login
+<form asp-controller="User" asp-action="attemptLogin" method="post">
+   
+    @Model.loginError
+    @if ((Model.loginError & 0x4) == 0x4)
+    {
+        <spane>Invalid userName or passWord.</spane> <br>
+    }
+    @if((Model.loginError & 0x1)==0x1){
+            <span>The userName field can not be blank.</span> <br>
+        }
+        <label asp-for="userName">UserName:</Label>
+        <input asp-for="userName" type="text" />
+        @if((Model.loginError & 0x2)==0x2){
+            <br><span>The passWord field can not be blank.</span> <br>
+        }
+        <label asp-for="passWord">PassWord:</label>
+        <input asp-for="passWord" type="text">
+        <input type="submit">
+
+</form>

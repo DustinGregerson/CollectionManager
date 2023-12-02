@@ -14,7 +14,10 @@ namespace CollectionManager.Models
         //varbinary(MAX) will need this later
         public byte[] image { get; set; }
 
-        public user? user { get; set; }
+        [Required(ErrorMessage = "You must enter a tag")]
+        public String tag { get; set; }
+
+        public User? user { get; set; }
 
     }
 }

@@ -6,37 +6,37 @@ namespace CollectionManager.Models
     {
         public UsersContext() { }
 
-        public UsersContext(DbContextOptions<usersContext> options)
+        public UsersContext(DbContextOptions<UsersContext> options)
            : base(options) { }
 
-        public DbSet<user> users { get; set; }
-        public DbSet<item> items { get; set; }
+        public DbSet<User> users { get; set; }
+        public DbSet<Item> items { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<item>().HasData(
-                new item {itemID=1, Name="Type writter",Description="An old type writter",image=new byte[0] },
-                new item {itemID=2, Name = "Amber", Description = "An old type writter", image = new byte[0]},
-                new item {itemID=3, Name = "Ancient pot ", Description = "An old type writter", image = new byte[0]}
+            modelBuilder.Entity<Item>().HasData(
+                new Item {itemID=1, Name="Type writter",Description="An old type writter",image=new byte[0],tag="machine"},
+                new Item {itemID=2, Name = "Amber", Description = "an old tree fossil", image = new byte[0],tag = "fossil" },
+                new Item {itemID=3, Name = "Ancient pot ", Description = "clay pot from 100bc", image = new byte[0],tag= "artifact" }
 
             );
-            modelBuilder.Entity<user>().HasData(
-            new user
+            modelBuilder.Entity<User>().HasData(
+            new User
             {
                 userID = 1,
                 userName = "test1",
                 password = "test1"
                
             },
-            new user
+            new User
             {
                 userID = 2,
                 userName = "test2",
                 password = "test2"
                 
             },
-            new user
+            new User
             {
                 userID = 3,
                 userName = "test3",

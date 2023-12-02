@@ -6,6 +6,10 @@
 
     Default layout for all the pages
 -->
+@{
+    var username = Context.Session.GetString("userName");
+
+}
 <html>
 <head>
     <meta charset="UTF-8">
@@ -15,6 +19,43 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
+        @if(username==null||username.Equals("null")){
+       <nav>
+           <ul>
+               <li>
+                    <a asp-controller="Item" asp-action="List">
+                       collection items
+                   </a>
+               </li>
+               <li>
+                    <a asp-controller="User" asp-action="Login">
+                       login
+                   </a>
+               </li>
+           </ul>
+       </nav>
+        }
+        else{
+       <nav>
+           <ul>
+                <li>
+                    <a asp-controller="Item" asp-action="List">
+                        collection items
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="User" asp-action="Details">
+                            @username
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="User" asp-action="LogOut">
+                       logOut
+                    </a>
+                </li>
+           </ul>
+       </nav>
+       }
     <div>
         @RenderBody()
     </div>
