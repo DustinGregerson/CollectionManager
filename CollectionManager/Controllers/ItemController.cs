@@ -13,42 +13,175 @@ namespace CollectionManager.Controllers
         {
             context = ctx;
         }
-        public IActionResult List()
+        public IActionResult List(string filterBy,string value)
         {
-            var result = from item in context.items
-                         join user in context.users on item.userID equals user.userID
-                         select new { Itemname = item.Name,ItemDescription=item.Description,ItemTag=item.tag,UserName=user.userName,ItemPic=item.image,ItemId=item.itemID};
             List<ItemsToUsersList> list = new List<ItemsToUsersList>();
-            foreach(var row in result)
+            List<string> tags= new List<string>();
+            List<string> userNames= new List<string>();
+            List<string> itemNames= new List<string>();
+            var tagsResult = from item in context.items
+                         join user in context.users on item.userID equals user.userID
+                         group item by item.tag into groupedItems
+                         select new { itemTags = groupedItems.Key};
+            foreach(var row in tagsResult)
             {
-                ItemsToUsersList item = new ItemsToUsersList();
-                item.name = row.Itemname;
-                item.description = row.ItemDescription;
-                item.tag = row.ItemTag;
-                item.userName= row.UserName;
-                item.itemId = ""+row.ItemId;
-                item.pic=imageConverter.byteArrayTo64BaseEncode(row.ItemPic);
-                list.Add(item);
+                tags.Add(row.itemTags);
             }
-            
-            return View(list);
-        }
-        //[HttpGet]
-        //[Route("item/list/{ItemName?}/{userName?}")]
-        public IActionResult Detailed(int id)
-        {
+            var itemNamesResult = from item in context.items
+                         join user in context.users on item.userID equals user.userID
+                         group item by item.Name into groupedItems
+                         select new { itemNames = groupedItems.Key };
+            foreach (var row in itemNamesResult)
+            {
+                itemNames.Add(row.itemNames);
+            }
+            var userNamesResult = from item in context.items
+                              join user in context.users on item.userID equals user.userID
+                              group user by user.userName into groupedItems
+                              select new { userNames = groupedItems.Key };
+            foreach (var row in userNamesResult)
+            {
+                userNames.Add(row.userNames);
+            }
+            ViewBag.tags= tags;
+            ViewBag.userNames= userNames;
+            ViewBag.itemNames= itemNames;
+            if (filterBy == null)
+            {
+                var result1 = from item in context.items
+                             join user in context.users on item.userID equals user.userID
+                             select new { ItemName = item.Name, ItemDescription = item.Description, ItemTag = item.tag, UserName = user.userName, ItemPic = item.image, ItemId = item.itemID };
+                
+                foreach (var row in result1)
+                {
+                    ItemsToUsersList item = new ItemsToUsersList();
+                    item.name = row.ItemName;
+                    item.description = row.ItemDescription;
+                    item.tag = row.ItemTag;
+                    item.userName = row.UserName;
+                    item.itemId = "" + row.ItemId;
+                    item.pic = imageConverter.byteArrayTo64BaseEncode(row.ItemPic);
+                    list.Add(item);
+                }
 
-            return View();
+                return View(list);
+            }
+            else
+            {
+                switch (filterBy)
+                {
+                    case "name":
+                        var result2 = from item in context.items
+                                     join user in context.users on item.userID equals user.userID
+                                     where item.Name==value
+                                     select new { ItemName = item.Name, ItemDescription = item.Description, ItemTag = item.tag, UserName = user.userName, ItemPic = item.image, ItemId = item.itemID };
+                        foreach (var row in result2)
+                        {
+                            ItemsToUsersList item = new ItemsToUsersList();
+                            item.name = row.ItemName;
+                            item.description = row.ItemDescription;
+                            item.tag = row.ItemTag;
+                            item.userName = row.UserName;
+                            item.itemId = "" + row.ItemId;
+                            item.pic = imageConverter.byteArrayTo64BaseEncode(row.ItemPic);
+                            list.Add(item);
+                        }
+                        return View(list);
+                    case "tag" :
+                        var result3 = from item in context.items
+                                     join user in context.users on item.userID equals user.userID
+                                     where item.tag == value
+                                     select new { ItemName = item.Name, ItemDescription = item.Description, ItemTag = item.tag, UserName = user.userName, ItemPic = item.image, ItemId = item.itemID };
+                        foreach (var row in result3)
+                        {
+                            ItemsToUsersList item = new ItemsToUsersList();
+                            item.name = row.ItemName;
+                            item.description = row.ItemDescription;
+                            item.tag = row.ItemTag;
+                            item.userName = row.UserName;
+                            item.itemId = "" + row.ItemId;
+                            item.pic = imageConverter.byteArrayTo64BaseEncode(row.ItemPic);
+                            list.Add(item);
+                        }
+                        return View(list);
+                    case "userName":
+                        var result4 = from item in context.items
+                                      join user in context.users on item.userID equals user.userID
+                                      where user.userName == value
+                                      select new { ItemName = item.Name, ItemDescription = item.Description, ItemTag = item.tag, UserName = user.userName, ItemPic = item.image, ItemId = item.itemID };
+                        foreach (var row in result4)
+                        {
+                            ItemsToUsersList item = new ItemsToUsersList();
+                            item.name = row.ItemName;
+                            item.description = row.ItemDescription;
+                            item.tag = row.ItemTag;
+                            item.userName = row.UserName;
+                            item.itemId = "" + row.ItemId;
+                            item.pic = imageConverter.byteArrayTo64BaseEncode(row.ItemPic);
+                            list.Add(item);
+                        }
+                        return View(list);
+                        
+                    default:
+                        var result5 = from item in context.items
+                                     join user in context.users on item.userID equals user.userID
+                                     select new { ItemName = item.Name, ItemDescription = item.Description, ItemTag = item.tag, UserName = user.userName, ItemPic = item.image, ItemId = item.itemID };
+
+                        foreach (var row in result5)
+                        {
+                            ItemsToUsersList item = new ItemsToUsersList();
+                            item.name = row.ItemName;
+                            item.description = row.ItemDescription;
+                            item.tag = row.ItemTag;
+                            item.userName = row.UserName;
+                            item.itemId = "" + row.ItemId;
+                            item.pic = imageConverter.byteArrayTo64BaseEncode(row.ItemPic);
+                            list.Add(item);
+                        }
+
+                        return View(list);
+                }
+            }
+        }
+        [HttpPost]
+        public IActionResult Detailed()
+        {
+            string itemID = (HttpContext.Request.Form["item.itemId"]);
+            if(itemID == null)
+            {
+                return View();
+            }
+            else
+            {
+                int ID=int.Parse(itemID);
+                var result = from item in context.items
+                             join user in context.users on item.userID equals user.userID
+                             where item.itemID == ID
+                             select new { ItemName = item.Name, ItemDescription = item.Description, ItemTag = item.tag, UserName = user.userName, ItemPic = item.image, ItemId = item.itemID };
+
+                ItemsToUsersList itemsToUsersList = new ItemsToUsersList();
+                foreach (var row in result)
+                {
+                    itemsToUsersList.name = row.ItemName;
+                    itemsToUsersList.description = row.ItemDescription;
+                    itemsToUsersList.tag = row.ItemTag;
+                    itemsToUsersList.userName = row.UserName;
+                    itemsToUsersList.itemId = "" + row.ItemId;
+                    itemsToUsersList.pic = imageConverter.byteArrayTo64BaseEncode(row.ItemPic);
+                }
+
+                return View(itemsToUsersList);
+            }
         }
         [HttpPost]
         public IActionResult Add() {
             Item item = new Item();
             
-                String name = HttpContext.Request.Form["name"];
-                String description = HttpContext.Request.Form["description"];
+                string name = HttpContext.Request.Form["name"];
+                string description = HttpContext.Request.Form["description"];
                 IFormFile image = HttpContext.Request.Form.Files["imageFile"];
-                String tag = HttpContext.Request.Form["tag"];
-                String id = HttpContext.Request.Form["id"];
+                string tag = HttpContext.Request.Form["tag"];
+                string id = HttpContext.Request.Form["id"];
                 int error = 0;
                 if (name.Equals(""))
                 {

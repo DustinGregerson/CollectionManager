@@ -1,5 +1,47 @@
 ﻿@model List<ItemsToUsersList>
+<div class="btn-group">
+<div>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter by Tag
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            @foreach (string name in ViewBag.tags)
+            {
+                <a class="dropdown-item" asp-controller="Item" asp-action="List" asp-route-filterBy="tag" asp-route-value=@name>@name</a>
+            }
+            
+        </div>
+    </div>
+</div>
+<div>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter by userName
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            @foreach (string name in ViewBag.userNames)
+            {
+                <a class="dropdown-item" asp-controller="Item" asp-action="List" asp-route-filterBy="userName" asp-route-value=@name>@name</a>
+            }
 
+        </div>
+    </div>
+</div>
+<div>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter by Item Name
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            @foreach (string name in ViewBag.itemNames)
+            {
+                <a class="dropdown-item" asp-controller="Item" asp-action="List" asp-route-filterBy="name" asp-route-value=@name>@name</a>
+            }
+        </div>
+    </div>
+</div>
+</div>
 <table id="itemListTable" class="table table-striped table-hover">
     <tr scope="row">
         <th>
@@ -27,12 +69,13 @@
                 @item.userName
             </td>
             <td>
-                <img src="data:image/png;base64,@item.pic"></img>
+                <img src="data:image/png;base64,@item.pic">
             </td>
             <td>
-                <from asp-controller="Item" asp-action="" class="form-group" method="get">
+                <form asp-controller="Item" asp-action="Detailed" class="form-group" method="post">
+                    <input hidden asp-for="@item.itemId" type="text" value="@item.itemId">
                     <input value="Details" class="btn btn-dark" type="submit">
-                </from>
+                </form>
             </td>
         </tr>
         }
