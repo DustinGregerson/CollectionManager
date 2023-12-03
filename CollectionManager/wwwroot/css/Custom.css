@@ -59,3 +59,12 @@
     height: 100px;
     width:100px;
 }
+#details{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+#details img{
+    width: 300px;
+    height: 300px;
+}

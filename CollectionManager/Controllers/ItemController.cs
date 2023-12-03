@@ -143,17 +143,17 @@ namespace CollectionManager.Controllers
                 }
             }
         }
-        [HttpPost]
-        public IActionResult Detailed()
+        [HttpGet]
+        public IActionResult Detailed(String id)
         {
-            string itemID = (HttpContext.Request.Form["item.itemId"]);
-            if(itemID == null)
+            
+            if(id == null)
             {
-                return View();
+                return RedirectToAction("Item", "List");
             }
             else
             {
-                int ID=int.Parse(itemID);
+                int ID=int.Parse(id);
                 var result = from item in context.items
                              join user in context.users on item.userID equals user.userID
                              where item.itemID == ID

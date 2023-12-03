@@ -1,1 +1,14 @@
 ﻿@model ItemsToUsersList
+<div id="details">
+    <h1>@Model.name Submited by @Model.userName</h1>
+    <div>
+        <div>
+            <h4>@Model.name</h4>
+            <img src="data:image/png;base64,@Model.pic" alt="@Model.name">
+        </div>
+        <div>
+            <h4>Description</h4>
+                @Model.description
+        </div>
+    </div>
+</div>
