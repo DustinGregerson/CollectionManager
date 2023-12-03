@@ -15,9 +15,10 @@ namespace CollectionManager.Models
         public byte[] image { get; set; }
 
         [Required(ErrorMessage = "You must enter a tag")]
-        public String tag { get; set; }
+        public string tag { get; set; }
 
-        public User? user { get; set; }
+        public int userID { get; set; }
+        public User user { get; set; }
 
     }
 }

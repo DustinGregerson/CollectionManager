@@ -1,19 +1,34 @@
 ﻿using CollectionManager.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CollectionManager.Controllers
 {
     public class ItemController : Controller
     {
-        private UsersContext context;
-        public ItemController(UsersContext ctx)
+        private CollectersContext context;
+        public ItemController(CollectersContext ctx)
         {
             context = ctx;
         }
         public IActionResult List()
         {
-            return View();
+            var result = from item in context.items
+                         join user in context.users on item.userID equals user.userID
+                         select new { Itemname = item.Name,ItemDescription=item.Description,ItemTag=item.tag,UserName=user.userName };
+            List<ItemsToUsersList> list = new List<ItemsToUsersList>();
+            foreach(var row in result)
+            {
+                ItemsToUsersList item = new ItemsToUsersList();
+                item.name = row.Itemname;
+                item.description = row.ItemDescription;
+                item.tag = row.ItemTag;
+                item.userName= row.UserName;
+                list.Add(item);
+            }
+            
+            return View(list);
         }
         
         public IActionResult Detailed(int id)

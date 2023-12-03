@@ -14,7 +14,7 @@ options.IdleTimeout = TimeSpan.FromMinutes(60)
 ) ;
 //creates the connection between th
 var connectionString = builder.Configuration.GetConnectionString("CollectionManager");
-builder.Services.AddDbContext<UsersContext>(options => 
+builder.Services.AddDbContext<CollectersContext>(options => 
                     options.UseSqlServer(connectionString));
 
 var app = builder.Build();

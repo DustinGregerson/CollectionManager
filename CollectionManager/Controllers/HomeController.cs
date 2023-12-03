@@ -12,6 +12,7 @@ namespace CollectionManager.Controllers
 
         public IActionResult Index()
         {
+            
             return View();
         }
 

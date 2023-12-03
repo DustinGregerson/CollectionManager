@@ -1,0 +1,14 @@
+﻿#loginForm{
+    margin-top:5%;
+    margin-right:25%;
+    margin-left:25%;
+    border: 6px solid black;
+    border-radius:20px;
+}
+#loginForm input,#invalidUorP{
+   width:90%;
+   margin-left:5%;
+}
+#loginForm label{
+   margin-left: 5%;
+}

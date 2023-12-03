@@ -7,8 +7,8 @@ namespace CollectionManager.Controllers
 {
     public class UserController : Controller
     {
-       private UsersContext context;
-        public UserController(UsersContext ctx)
+       private CollectersContext context;
+        public UserController(CollectersContext ctx)
         {
             context = ctx;
         }

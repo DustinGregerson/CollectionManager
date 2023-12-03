@@ -1,21 +1,24 @@
 ﻿@model Login
-<form asp-controller="User" asp-action="attemptLogin" method="post">
+<form asp-controller="User" asp-action="attemptLogin" method="post" class="form-group" id="loginForm">
    
-    @Model.loginError
     @if ((Model.loginError & 0x4) == 0x4)
     {
-        <spane>Invalid userName or passWord.</spane> <br>
+        <span id="invalidUorP" class="text-danger">Invalid UserName or PassWord.</span> <br>
     }
-    @if((Model.loginError & 0x1)==0x1){
-            <span>The userName field can not be blank.</span> <br>
-        }
-        <label asp-for="userName">UserName:</Label>
-        <input asp-for="userName" type="text" />
-        @if((Model.loginError & 0x2)==0x2){
-            <br><span>The passWord field can not be blank.</span> <br>
-        }
-        <label asp-for="passWord">PassWord:</label>
-        <input asp-for="passWord" type="text">
-        <input type="submit">
+
+        <label asp-for="userName">UserName:
+                @if((Model.loginError & 0x1)==0x1){
+                    <span class="text-danger">The UserName field can not be blank.</span> 
+                }
+        </Label>
+        <input asp-for="userName" type="text" class="form-control"/>
+
+        <label asp-for="passWord">PassWord:
+            @if((Model.loginError & 0x2)==0x2){
+                <span class="text-danger">The PassWord field can not be blank.</span> 
+            }
+        </label>
+        <input asp-for="passWord" type="text" class="form-control">
+        <input type="submit" class="btn btn-primary">
 
 </form>
