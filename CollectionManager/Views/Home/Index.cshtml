@@ -1,15 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<h1>Welcome to the collecters hub</h1>
-<div>
-    The collecters hub is a place were you can show off your collections to the world. wether that be old relics,
-     stamps, rocks or tree leavs any collection you wish to post we will store the information and display it
-    to anyone that wishes to see it.
-</div>
-<img alt="latest img added">
-
-<div>
-    *latest item description
+<div id="mainPage">
+    <h1 class="display-2 text-center">Welcome to the collecter's hub</h1>
+        <p class="text-center">
+            The collecters hub is a place were you can show off your collections to the world. wether that be old relics,
+            stamps, rocks or tree leavs any collection you wish to post we will store the information and display it
+            to anyone that wishes to see it.
+        </p>
+    
+    <div>
+        <h2 class="display-4">Last item added to the site </h2>
+        <div>
+            <div>
+                <h4>@ViewBag.frontPageName</h4>
+                <img  src="data:image/png;base64,@ViewBag.frontPageImage" alt="latest img added">
+            </div>
+            <div>
+                <h4>Description</h4>
+                @ViewBag.frontPageDescription
+            </div>
+        </div>
+    </div>
 </div>
 

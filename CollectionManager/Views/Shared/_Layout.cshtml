@@ -23,14 +23,19 @@
         @if(username==null||username.Equals("null")){
         <nav class="navbar navbar-dark bg-dark">
            <ul class="navbar nav">
+                <li class="nav-item">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link">
+                        Home Page
+                    </a>
+                </li>
                <li class="nav-item">
                     <a asp-controller="Item" asp-action="List" class="nav-link">
-                       collection items
+                       Collection Items
                    </a>
                </li>
                <li class="nav-item">
                     <a asp-controller="User" asp-action="Login" class="nav-link">
-                       login
+                       Login
                    </a>
                </li>
            </ul>
@@ -40,8 +45,13 @@
         <nav class="navbar navbar-dark bg-dark">
             <ul class="navbar nav">
                 <li class="nav-item">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link">
+                        Home Page
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a asp-controller="Item" asp-action="List" class="nav-link">
-                        collection items
+                        Collection Items
                     </a>
                 </li>
                 <li class="nav-item">
@@ -51,7 +61,7 @@
                 </li>
                 <li class ="nav-item">
                     <a asp-controller="User" asp-action="LogOut" class="nav-link">
-                       logOut
+                       LogOut
                     </a>
                 </li>
            </ul>

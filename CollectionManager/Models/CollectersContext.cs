@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CollectionManager.tools;
+using Microsoft.EntityFrameworkCore;
 namespace CollectionManager.Models
   
 {
@@ -38,18 +39,10 @@ namespace CollectionManager.Models
 
 
             );
-            FileStream fileStream = new FileStream("images/amber.png",FileMode.Open,FileAccess.Read);
-            MemoryStream memoryStream=new MemoryStream();
-            fileStream.CopyTo( memoryStream );
-            byte[] img1 = memoryStream.ToArray();
 
-            memoryStream.Position = 0;
-            fileStream = new FileStream("images/oldPot.png", FileMode.Open, FileAccess.Read);
-            byte[] img2= memoryStream.ToArray();
-
-            memoryStream.Position = 0;
-            fileStream = new FileStream("images/typeWriter.png", FileMode.Open, FileAccess.Read);
-            byte[] img3 = memoryStream.ToArray();
+            byte[] img1 = imageConverter.imageToByteArray("images/amber.png");
+            byte[] img2= imageConverter.imageToByteArray("images/oldPot.png");
+            byte[] img3 = imageConverter.imageToByteArray("images/typeWriter.png");
 
             modelBuilder.Entity<Item>().HasData(
             new Item { itemID = 1, Name = "Type writter", Description = "An old type writter", image = img3, tag = "machine", userID=1 },

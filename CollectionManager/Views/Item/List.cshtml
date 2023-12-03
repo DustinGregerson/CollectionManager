@@ -1,18 +1,18 @@
 ﻿@model List<ItemsToUsersList>
 
-<table class="table table-striped table-hover">
+<table id="itemListTable" class="table table-striped table-hover">
     <tr scope="row">
         <th>
             Name
-        </th>
-        <th>
-            Description
         </th>
         <th>
             Tag
         </th>
         <th>
             User Name
+        </th>
+        <th>
+            Picture
         </th>
     </tr>
         @foreach(var item in Model){
@@ -21,13 +21,18 @@
                 @item.name
             </td>
             <td>
-                @item.description
-            </td>
-            <td>
                 @item.tag
             </td>
             <td>
                 @item.userName
+            </td>
+            <td>
+                <img src="data:image/png;base64,@item.pic"></img>
+            </td>
+            <td>
+                <from asp-controller="Item" asp-action="" class="form-group" method="get">
+                    <input value="Details" class="btn btn-dark" type="submit">
+                </from>
             </td>
         </tr>
         }

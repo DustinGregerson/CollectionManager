@@ -1,4 +1,5 @@
 ﻿using CollectionManager.Models;
+using CollectionManager.tools;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +17,7 @@ namespace CollectionManager.Controllers
         {
             var result = from item in context.items
                          join user in context.users on item.userID equals user.userID
-                         select new { Itemname = item.Name,ItemDescription=item.Description,ItemTag=item.tag,UserName=user.userName };
+                         select new { Itemname = item.Name,ItemDescription=item.Description,ItemTag=item.tag,UserName=user.userName,ItemPic=item.image,ItemId=item.itemID};
             List<ItemsToUsersList> list = new List<ItemsToUsersList>();
             foreach(var row in result)
             {
@@ -25,14 +26,18 @@ namespace CollectionManager.Controllers
                 item.description = row.ItemDescription;
                 item.tag = row.ItemTag;
                 item.userName= row.UserName;
+                item.itemId = ""+row.ItemId;
+                item.pic=imageConverter.byteArrayTo64BaseEncode(row.ItemPic);
                 list.Add(item);
             }
             
             return View(list);
         }
-        
+        //[HttpGet]
+        //[Route("item/list/{ItemName?}/{userName?}")]
         public IActionResult Detailed(int id)
         {
+
             return View();
         }
         [HttpPost]
