@@ -2,9 +2,10 @@
 {
     public class Login
     {
-        public String userName { get; set; }
-        public String passWord { get; set; }
+        public string userName { get; set; }
+        public string passWord { get; set; }
         public int loginError { get; set; }
+
         public int createAccountError { get; set; }
     }
 }

@@ -2,7 +2,9 @@
 using CollectionManager.tools;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.IdentityModel.Tokens;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CollectionManager.Controllers
 {
@@ -12,6 +14,13 @@ namespace CollectionManager.Controllers
         public ItemController(CollectersContext ctx)
         {
             context = ctx;
+        }
+        public IActionResult Delete(string id)
+        {
+            Item item=context.items.Find(int.Parse(id));
+            context.Remove(item);
+            context.SaveChanges();
+            return RedirectToAction("details", "User");
         }
         public IActionResult List(string filterBy,string value)
         {
@@ -144,12 +153,12 @@ namespace CollectionManager.Controllers
             }
         }
         [HttpGet]
-        public IActionResult Detailed(String id)
+        public IActionResult Detailed(string id)
         {
-            
+            string id1 = id;
             if(id == null)
             {
-                return RedirectToAction("Item", "List");
+                return RedirectToAction("List", "Item");
             }
             else
             {
@@ -173,56 +182,58 @@ namespace CollectionManager.Controllers
                 return View(itemsToUsersList);
             }
         }
+        public IActionResult Add()
+        {
+            Error error = new Error();
+            return View("Add",error);
+        }
+
         [HttpPost]
-        public IActionResult Add() {
+        public IActionResult AddItem() {
             Item item = new Item();
-            
-                string name = HttpContext.Request.Form["name"];
-                string description = HttpContext.Request.Form["description"];
-                IFormFile image = HttpContext.Request.Form.Files["imageFile"];
-                string tag = HttpContext.Request.Form["tag"];
-                string id = HttpContext.Request.Form["id"];
+                
+                string itemName = HttpContext.Request.Form["addName"];
+                string itemDescription = HttpContext.Request.Form["addDescription"];
+                IFormFile itemImage = HttpContext.Request.Form.Files["addPic"];
+                string itemTag = HttpContext.Request.Form["addTag"];
+                string userId = HttpContext.Session.GetString("id");
+
                 int error = 0;
-                if (name.Equals(""))
+                if (itemName.Equals(""))
                 {
                     error += 0x1;
                 }
-                if (description.Equals(""))
+                if (itemDescription.Equals(""))
                 {
                     error += 0x2;
                 }
-                if (image==null || image.Length==0)
+                if (itemImage==null)
                 {
                     error += 0x4;
                 }
-                if(tag.Equals(""))
+                if(itemTag.Equals(""))
                 {
                     error += 0x8;
                 }
-                if(id.Equals(""))
-                {
-                    error += 0x10;
-                }
-            if (error == 0)
+            if (error == 0&&userId!=null)
             {
-                User user = context.users.Find(id);
+                User user = context.users.Find(int.Parse(userId));
                 if (user != null)
                 {
-                    item.Description = description;
+                    
                     byte[] imageData;
-                    using(var stream = new MemoryStream())
-                    {
-                        image.CopyTo(stream);
-                        imageData = stream.ToArray();
-                    }
-                    item.image= imageData;
-                    item.tag = tag;
-                    item.Name= name;
+                    MemoryStream memoryStream = new MemoryStream();
+                    itemImage.CopyTo(memoryStream);
+                    byte[] data = memoryStream.ToArray();
+                    item.image = data;
+                    item.tag = itemTag;
+                    item.Name= itemName;
                     item.user= user;
-
-
+                    item.Description = itemDescription;
+                    item.userID = int.Parse(userId);
                     context.items.Add(item);
-                    return View("Detailed",item);
+                    context.SaveChanges();
+                    return RedirectToAction("details", "User");
                 }
                 else
                 {
@@ -231,8 +242,52 @@ namespace CollectionManager.Controllers
             }
             else
             {
-                return View("Add",error);
+                Error errorNum = new Error();
+                errorNum.errorNumber= error;
+                return View("Add",errorNum);
             }
+        }
+        //The edit action is used to edit the logged in users item
+        [HttpPost]
+        public IActionResult Edit(string id)
+        {
+
+            string name = HttpContext.Request.Form["editName"];
+            string description = HttpContext.Request.Form["editDescription"];
+            IFormFile image = HttpContext.Request.Form.Files["editPic"];
+            string tag = HttpContext.Request.Form["editTag"];
+            int index = int.Parse(id);
+            //grabbing the item from the data set
+            Item item=context.items.Find(index);
+            if (item != null)
+            {
+                if (!name.IsNullOrEmpty())
+                {
+                    item.Name = name;
+                }
+                if (!description.IsNullOrEmpty())
+                {
+                    item.Description = description;
+                }
+                if (!tag.IsNullOrEmpty())
+                {
+                    item.tag = tag;
+                }
+                if (image != null)
+                {
+                    MemoryStream memoryStream= new MemoryStream();
+                    image.CopyTo(memoryStream);
+                    byte[] data = memoryStream.ToArray();
+                    item.image = data;
+                }
+                //since item is a refrance to an item in the data set when save changes is called
+                //the ef core will automaticly update the data based to the new values
+                context.SaveChanges();
+            }
+
+            //this redirects to items detailed. the new {id=id} fills out the id parameter of the Detailed IAction
+            //so the user can see the changes they are makeing each time they hit submit
+            return RedirectToAction("Detailed", "Item",new { id=id });
         }
     }
 }

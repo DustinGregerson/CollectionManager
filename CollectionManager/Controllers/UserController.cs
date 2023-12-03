@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Web;
 using CollectionManager.Models;
+using CollectionManager.tools;
+using System.Collections.Generic;
+
 namespace CollectionManager.Controllers
 {
     public class UserController : Controller
@@ -33,10 +36,11 @@ namespace CollectionManager.Controllers
             }
             if (model.loginError==0)
             {
-                var user = context.users.SingleOrDefault(m => m.userName==model.userName);
+                User user = context.users.SingleOrDefault(m => m.userName==model.userName);
                 if (user != null&&user.password.Equals(model.passWord))
                 {
-                    HttpContext.Session.SetString("userName", model.userName);
+                    HttpContext.Session.SetString("id", ""+user.userID);
+                    HttpContext.Session.SetString("userName", user.userName);
                     return RedirectToAction("index", "Home");
                 }
                 else
@@ -57,7 +61,23 @@ namespace CollectionManager.Controllers
         }
         public IActionResult Details()
         {
-            return View();
+            List<ItemsToUsersList> list = new List<ItemsToUsersList>();
+            var result = from item in context.items
+                          join user in context.users on item.userID equals user.userID
+                          where user.userName == HttpContext.Session.GetString("userName")
+                          select new { ItemName = item.Name, ItemDescription = item.Description, ItemTag = item.tag, UserName = user.userName, ItemPic = item.image, ItemId = item.itemID };
+            foreach (var row in result)
+            {
+                ItemsToUsersList item = new ItemsToUsersList();
+                item.name = row.ItemName;
+                item.description = row.ItemDescription;
+                item.tag = row.ItemTag;
+                item.userName = row.UserName;
+                item.itemId = "" + row.ItemId;
+                item.pic = imageConverter.byteArrayTo64BaseEncode(row.ItemPic);
+                list.Add(item);
+            }
+            return View(list);
         }
         [HttpPost]
         public IActionResult CreateAccount(String userName,String passWord)

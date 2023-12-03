@@ -1,1 +1,58 @@
-﻿
+﻿@model Error
+@if(Context.Session.GetString("userName")!=null){
+<form asp-controller="Item" asp-action="AddItem" enctype="multipart/form-data" method="post">
+    <div id="details">
+        <h1>(Your item name will go here) Submited by @Context.Session.GetString("userName")</h1>
+        <div>
+            <div>
+                    @if ((Model.errorNumber & 0x1) == 0x1)
+                    {
+                        <label for="addName">Add name:</label>
+                        <input class="alert alert-danger" name="addName" type="text">
+                    }
+                    else
+                    {
+                        <label for="addName">Add name:</label>
+                        <input name="addName" type="text">
+                    }
+                    
+                        <h4>(Your item name will go here)</h4>
+                    @if ((Model.errorNumber & 0x8) == 0x8)
+                    {
+                        <label for="addTag">Add tag:</label>
+                        <input class="alert alert-danger" name="addTag" type="text">
+                    }
+                    else
+                    {
+                        <label for="addTag">Add tag:</label>
+                        <input name="addTag" type="text">
+                    }
+                    <h4>(Your tag name will show up here in the edit page)</h4>
+                    <div>(your image will show up here)</div>
+            </div>
+                @if ((Model.errorNumber & 0x4) == 0x4)
+                {
+                    <label for="addPic">Add image:</label>
+                    <input class="alert alert-danger" name="addPic" type="file" accept="image/*">
+                }
+                else
+                {
+                    <label for="addPic">Add image:</label>
+                    <input name="addPic" type="file" accept="image/*">
+                }
+            <div>
+                    <h4>Description</h4>
+                    @if ((Model.errorNumber & 0x2) == 0x2)
+                    {
+                        <textarea class="alert alert-danger" name="addDescription" rows="20" cols="50">(your description goes here)</textarea>
+                    }
+                    else
+                    {
+                        <textarea name="addDescription" rows="20" cols="50">(your description goes here)</textarea>
+                    }
+            </div>
+        </div>
+        <button class="btn btn-secondary" type="submit">submit</button>
+    </div>
+    </form>
+}
