@@ -1,4 +1,12 @@
 ﻿@model ItemsToUsersList
+<!--
+    Author:Dustin Gregerson
+    Date:12/3/23
+    Description:
+    This page displays when the user clicks on the details button on the side of the list table in list.cshtml
+    If the user is logged in and the item they click on is there own item then they have the option of editing that
+    items details.
+-->
 @if(Context.Session.GetString("userName")!=Model.userName){
 <div id="details">
     <h1>@Model.name Submited by @Model.userName</h1>

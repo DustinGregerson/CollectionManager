@@ -1,6 +1,13 @@
 ﻿@model Login
+<!--
+    Author:Dustin Gregerson
+    Date:12/3/23
+    Description:
+    This is the login page for all users who are not logged in. To be logged in the user name must be inside the
+    Session and that only happens when the user name and password match a row in the users data set
+-->
 <form asp-controller="User" asp-action="attemptLogin" method="post" class="form-group" id="loginForm">
-   
+   <h1>Login</h1>
     @if ((Model.loginError & 0x4) == 0x4)
     {
         <span id="invalidUorP" class="text-danger">Invalid UserName or PassWord.</span> <br>
@@ -18,7 +25,7 @@
                 <span class="text-danger">The PassWord field can not be blank.</span> 
             }
         </label>
-        <input asp-for="passWord" type="text" class="form-control">
+        <input asp-for="passWord" type="password" class="form-control">
         <input type="submit" class="btn btn-primary">
 
 </form>

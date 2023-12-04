@@ -1,12 +1,19 @@
 ﻿@model Error
+<!--
+    Author:Dustin Gregerson
+    Date:12/3/23
+    Description:
+    This is the user interfrace for the user to create an account
+    if there is a error the createAccount action will bring the user back to this page and display what went wrong
+-->
 <form asp-controller="User" asp-action="CreateAccount" method="post" class="form-group" id="loginForm">
-        
-    @if (Model.errorNumber == 0x1)
+        <h1>Create Account</h1>
+    @if ((Model.errorNumber&0x1) == 0x1)
     {
         <span id="invalidUorP" class="text-danger">Sorry that user name is taken</span> 
         <br>
     }
-        @if (Model.errorNumber == 0x2)
+        @if ((Model.errorNumber&0x2) == 0x2)
     {
         <span id="invalidUorP" class="text-danger">The user name can not be left blank</span> 
         <br>
@@ -14,14 +21,14 @@
         <label for="userName">UserName:
         </Label>
         <input name="userName" type="text" class="form-control"/>
-            @if (Model.errorNumber == 0x1)
+            @if ((Model.errorNumber&0x4) == 0x4)
     {
-        <span id="invalidUorP" class="text-danger">The user name can not be left blank</span> 
+        <span id="invalidUorP" class="text-danger">The Password can not be left blank</span> 
         <br>
     }
         <label for="passWord">PassWord:
         </label>
-        <input name="passWord" type="text" class="form-control">
+        <input name="passWord" type="password" class="form-control">
         <input type="submit" class="btn btn-primary">
 
 </form>

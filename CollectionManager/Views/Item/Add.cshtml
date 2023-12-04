@@ -1,4 +1,11 @@
 ﻿@model Error
+<!--
+    Author:Dustin Gregerson
+    Date:12/3/23
+    Description:
+    This page is displayed when the user clicks on the add button when they are in User/Details
+    This allows a user that is logged in to add a new item to there collection
+-->
 @if(Context.Session.GetString("userName")!=null){
 <form asp-controller="Item" asp-action="AddItem" enctype="multipart/form-data" method="post">
     <div id="details">

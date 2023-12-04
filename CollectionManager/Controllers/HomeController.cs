@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 //Author: Dustin Gregerson
 //Date: 11/29/2023
-//Description: main routing controller
+//Description: handels the routing for the main page
 
 namespace CollectionManager.Controllers
 {
@@ -17,8 +17,9 @@ namespace CollectionManager.Controllers
         {
             context = ctx;
         }
-        public IActionResult Index()
+        public ViewResult Index()
         {
+            //Grabs the last item added to the items data set and displays it on the main page
             var result= from items in context.items
                         orderby items.itemID
                         select new {Itempic=items.image,ItemDescription=items.Description,ItemName=items.Name };
