@@ -1,0 +1,27 @@
+﻿@model Error
+<form asp-controller="User" asp-action="CreateAccount" method="post" class="form-group" id="loginForm">
+        
+    @if (Model.errorNumber == 0x1)
+    {
+        <span id="invalidUorP" class="text-danger">Sorry that user name is taken</span> 
+        <br>
+    }
+        @if (Model.errorNumber == 0x2)
+    {
+        <span id="invalidUorP" class="text-danger">The user name can not be left blank</span> 
+        <br>
+    }
+        <label for="userName">UserName:
+        </Label>
+        <input name="userName" type="text" class="form-control"/>
+            @if (Model.errorNumber == 0x1)
+    {
+        <span id="invalidUorP" class="text-danger">The user name can not be left blank</span> 
+        <br>
+    }
+        <label for="passWord">PassWord:
+        </label>
+        <input name="passWord" type="text" class="form-control">
+        <input type="submit" class="btn btn-primary">
+
+</form>

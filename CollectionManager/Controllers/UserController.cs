@@ -5,6 +5,7 @@ using System.Web;
 using CollectionManager.Models;
 using CollectionManager.tools;
 using System.Collections.Generic;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CollectionManager.Controllers
 {
@@ -79,23 +80,60 @@ namespace CollectionManager.Controllers
             }
             return View(list);
         }
-        [HttpPost]
-        public IActionResult CreateAccount(String userName,String passWord)
+        public ViewResult Create(Error error)
         {
-            var currentUser= context.users.Find(userName);
-            if (currentUser == null)
+            if (error == null)
             {
-
+                Error errorBuild = new Error();
+                error.errorNumber = 0;
+                return View(errorBuild);
             }
             else
             {
-                HttpContext.Session.SetString("userName", userName);
-                currentUser.userName = userName;
-                currentUser.password = passWord;
-                context.users.Add(currentUser);
+                return View(error);
             }
+        }
+        [HttpPost]
+        public IActionResult CreateAccount()
+        {
+            string userName = HttpContext.Request.Form["userName"];
+            string passWord = HttpContext.Request.Form["passWord"];
 
-            return View();
+            User currentUser = context.users.SingleOrDefault(u => u.userName == userName);
+
+            Error error =new Error();
+            error.errorNumber=0;
+
+            if (currentUser == null)
+            {
+                if (userName.IsNullOrEmpty())
+                {
+                    error.errorNumber = 0x2;
+                }
+                if(passWord.IsNullOrEmpty())
+                {
+                    error.errorNumber = 0x4;
+                }
+                if (error.errorNumber == 0)
+                {
+                    User user = new User();
+                    user.userName = userName;
+                    user.password = passWord;
+                    HttpContext.Session.SetString("userName", userName);
+                    context.users.Add(user);
+                    context.SaveChanges();
+                    return RedirectToAction("index", "Home");
+                }
+                else
+                {
+                    return View("Create",error);
+                }
+            }
+            else
+            {
+                error.errorNumber = 0x1;
+                return View("Create",error);
+            }
         }
     }
 }
